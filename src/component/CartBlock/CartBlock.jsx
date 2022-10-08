@@ -2,11 +2,12 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 
 import './CartBlock';
-
 const CartBlock = () => {
+
     return (
 
         <div class="container container--cart">
+
             <div class="cart">
                 <div class="cart__top">
                     <h2 class="content__title"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">

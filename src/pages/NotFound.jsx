@@ -6,6 +6,7 @@ const NotFound = () => {
     return (
         <div>
             <NotFoundBlock />
+
         </div>
     )
 }

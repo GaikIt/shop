@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 import Categories from '../component/Categories/Categories';
 import Paginat from '../component/Pagination/Pagination';
 import PizzaBlock from '../component/PizzaBlock/PizzaBlock';
@@ -11,30 +12,28 @@ const Home = ({ searchValue }) => {
     const [items, setItems] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
-    const [categoryId, setCategoryId] = useState(0);
-    const [sortSelect, setSortSelect] = useState({
-        name: 'популярности',
-        sortProperty: 'rating'
-    });
+
+    const { categoryId, sort } = useSelector((state) => state.filter)
 
 
     useEffect(() => {
+
         setLoading(true);
-        const sortBy = sortSelect.sortProperty.replace('-', '');
-        const order = sortSelect.sortProperty.includes('-') ? 'asc' : 'desc';
+        const sortBy = sort.sortProperty.replace('-', '');
+        const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
         const category = categoryId > 0 ? `category=${categoryId}` : '';
         const search = searchValue ? `&search=${searchValue}` : '';
-        fetch(`https://632741ec5731f3db9956538d.mockapi.io/item?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
-            .then((res) => res.json())
-            .then(
-                (arr) => {
-                    setItems(arr);
-                    setLoading(false);
-                }
-            )
+
+        axios.get(`https://632741ec5731f3db9956538d.mockapi.io/item?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
+            .then((res) => {
+                setItems(res.data);
+                setLoading(false);
+            }
+
+            );
         window.scrollTo(0, 0);
 
-    }, [categoryId, sortSelect, searchValue, currentPage])
+    }, [categoryId, sort, searchValue, currentPage])
 
 
     const Skeleton = [...new Array(6)].map((_, index) => <SkeletonPizza key={index} />);
@@ -44,13 +43,13 @@ const Home = ({ searchValue }) => {
         } else {
             return false;
         }
-    })
-        .map((item, i) => <PizzaBlock key={item.id} {...item} />);
+    }).map((item, i) => <PizzaBlock key={item.id} {...item} />);
+
     return (
         <div className='container'>
             <div className="content__top ">
-                <Categories categoryId={categoryId} setCategoryId={(i) => setCategoryId(i)} />
-                <Sort value={sortSelect} setSortSelect={(i) => setSortSelect(i)} />
+                <Categories />
+                <Sort />
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">

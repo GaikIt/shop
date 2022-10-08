@@ -38,6 +38,15 @@ h2 {
 a {
   text-decoration: none;
 }
+
+.calc {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
 .header {
   border-bottom: 1px solid #f6f6f6;
   padding: 40px 0;

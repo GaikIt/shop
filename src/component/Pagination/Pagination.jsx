@@ -1,16 +1,18 @@
 import React from 'react'
 import { Pagination } from '@mui/material';
-export const Paginat = (props) => {
-    let page = 1
-
+import { useDispatch } from 'react-redux';
+import { setCurrentPage } from '../../redux/slices/filterSlice';
+export const Paginat = () => {
+    const dispatch = useDispatch();
+    const onChangePage = (number) => {
+        dispatch(setCurrentPage(number));
+    }
     return (
-        <div>
-            <Pagination count={3} color="primary" onChange={
 
-                (event) => {
-                    props.onChangePage(Number(event.target.innerText))
-                }
-            } />
+        <div>
+            <Pagination count={3} color="primary" onChange={(event => {
+                onChangePage(Number(event.target.innerText))
+            })} />
         </div>
     )
 }
